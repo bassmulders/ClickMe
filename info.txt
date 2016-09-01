@@ -1,0 +1,1 @@
+﻿Thanks to information on: http://codereview.stackexchange.com/questions/40145/making-lines-with-svg-and-javascript
