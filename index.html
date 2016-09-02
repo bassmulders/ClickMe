@@ -20,11 +20,14 @@
         <script>
             var canvas;
 
-            function Meting(value)  {
+            /*function Meting(datum, waarde)  {
+                this.timeStamp = datum;
+                this.value = waarde;
+            }*/
+            function Meting(waarde) {
                 this.timeStamp = new Date();
-                this.value = value;
+                this.value = waarde;
             }
-
             var metingen = [];
 
             SVG = {
@@ -89,8 +92,8 @@
             }
 
 
-            function addMeasurement(value) {
-                metingen.push(new Meting(value)); // Voeg nieuwe meetwaarde toe aan array.
+            function addMeasurement(msrValue) {
+                metingen.push(new Meting(msrValue)); // Voeg nieuwe meetwaarde toe aan array.
                 //console.log(metingen.length + " " + metingen[metingen.length - 1].timeStamp + " " + metingen[metingen.length - 1].value);
                 appendMeasurementToTable(metingen.length - 1); // Toon nieuwe meetwaarde in tabel
                 appendToGraph(metingen.length - 1);
@@ -126,6 +129,24 @@
 
                 return str;
             }
+
+            function inputOnKeyPress(e) {
+                //alert(e.keyCode);
+                if ((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 13) {
+                    alert("Only digits [0...9] are allowed");
+                }
+                if (e.keyCode === 13) {
+                    //e.prevenDefault();
+                    //alert('Enter was pressed');
+                    addMeasurement(document.getElementById('meting2').value);
+                    document.getElementById('meting').value = "";
+                } else {
+                    if (document.getElementById('meting2').value > 100) {
+                        alert("Only vaules of 100 and less are allowed.");
+                        e.preventDefault();
+                    }
+                }
+            }
         </script>
 	</head>
 
@@ -134,10 +155,24 @@
             <table>
                 <tr>
                     <td>
-                        Meetwaarde: <input id="meting" type="text" name="meting">
+                        Meetdatum: <input id="datum" type="date" />
                     </td>
                     <td>
-                        <button type="button" onclick="addMeasurement(document.getElementById('meting').value)">Toevoegen</button>
+                        Meetwaarde: <input id="meting1" type="range" min="0" max="100" name="meting">
+                    </td>
+                    <td>
+                        <button type="button" onclick="addMeasurement(document.getElementById('meting1').value)">Toevoegen</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        Meetwaarde: <input id="meting2" type="text" name="meting" onkeypress="inputOnKeyPress(event)">
+                    </td>
+                    <td>
+                        <button type="button" onclick="addMeasurement(document.getElementById('meting2').value)">Toevoegen</button>
                     </td>
                 </tr>
             </table>
